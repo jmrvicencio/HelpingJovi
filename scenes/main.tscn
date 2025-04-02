@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://djuti6x5kvqce"]
+[gd_scene load_steps=6 format=3 uid="uid://djuti6x5kvqce"]
 
 [ext_resource type="Script" uid="uid://c3m82oi5m3k55" path="res://scenes/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csvew8um3cwx6" path="res://elements/character/character.tscn" id="1_o5qli"]
+[ext_resource type="Texture2D" uid="uid://ckn3cu47shlp0" path="res://assets/icon.svg" id="3_sugp2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1bvp3"]
 size = Vector2(1152, 320)
@@ -40,3 +41,10 @@ metadata/_edit_group_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(35, 35)
 shape = SubResource("RectangleShape2D_jyhfs")
+
+[node name="JumpIndicator" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.380392, 0.388235, 1, 1)
+position = Vector2(0, -139)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_sugp2")

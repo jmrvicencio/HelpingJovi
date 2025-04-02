@@ -2,6 +2,7 @@ class_name Character
 extends CharacterBody2D
 
 signal custom_signal()
+signal pass_jump(partner:Character)
 
 enum PLAYER{
 	ONE,
@@ -23,7 +24,14 @@ var can_jump:bool = false :
 
 func _set_can_jump(val):
 	can_jump = val
-	jump_indicator.visible = val
+	
+	#jump_indicator.visible = val
+	#jump_indicator.global_position = partner.global_position - Vector2(0, 139.0)
+	#
+	#var tween := create_tween()
+	#tween.set_ease(Tween.EASE_OUT)
+	#tween.set_trans(Tween.TRANS_BACK)
+	#tween.tween_property(jump_indicator, "position", Vector2(0, -139.0), 0.4)
 
 
 func _physics_process(delta: float) -> void:
@@ -43,6 +51,7 @@ func _physics_process(delta: float) -> void:
 	if give_jump_input and can_jump:
 		can_jump = false
 		partner.can_jump = true
+		pass_jump.emit(partner)
 
 	# Add the gravity.
 	if not is_on_floor():
