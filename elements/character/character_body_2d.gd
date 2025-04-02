@@ -10,11 +10,12 @@ enum PLAYER{
 }
 
 @export var player: PLAYER = PLAYER.ONE
-@export var speed: float = 300.0
+@export var speed: float = 200.0
 @export var jump_velocity = -400.0
 @export var gravity_scale = Vector2(1, 1)
-@export var gravity:Vector2 = Vector2(0, 980)
+@export var gravity: Vector2 = Vector2(0, 980)
 @export var partner:Character
+@export var push_force: Vector2 = Vector2(2000.0, 2000)
 
 @onready var jump_indicator: Sprite2D = %JumpIndicator
 
@@ -24,14 +25,19 @@ var can_jump:bool = false :
 
 func _set_can_jump(val):
 	can_jump = val
-	
-	#jump_indicator.visible = val
-	#jump_indicator.global_position = partner.global_position - Vector2(0, 139.0)
-	#
-	#var tween := create_tween()
-	#tween.set_ease(Tween.EASE_OUT)
-	#tween.set_trans(Tween.TRANS_BACK)
-	#tween.tween_property(jump_indicator, "position", Vector2(0, -139.0), 0.4)
+	if val:
+		var dir_to_partner: Vector2 = partner.position.direction_to(position)
+		velocity.x += dir_to_partner.x * push_force.x
+		velocity.y = dir_to_partner.y * push_force.y
+		
+		if is_on_floor():
+			velocity.x += speed if partner.position.x - position.x < 0 else -speed
+			velocity.y -= 300
+			
+		velocity.y = clampf(velocity.y, -1000.0, INF)
+		velocity.x = clampf(velocity.x, -2000, 2000)
+		
+		print(velocity)
 
 
 func _physics_process(delta: float) -> void:
@@ -64,9 +70,14 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
+	
+	var air_drag: float = 1.0
+	if !is_on_floor():
+		air_drag = 0.05
+		
 	if direction:
-		velocity.x = direction * speed
+		velocity.x = move_toward(velocity.x, direction * speed, speed * (air_drag * 15))
 	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
+		velocity.x = move_toward(velocity.x, 0, speed * air_drag)
 
 	move_and_slide()

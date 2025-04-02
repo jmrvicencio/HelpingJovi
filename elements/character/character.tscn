@@ -15,13 +15,5 @@ gravity_scale = Vector2(1, 3)
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_w87oa")
 
-[node name="JumpIndicator" type="Sprite2D" parent="."]
-unique_name_in_owner = true
-visible = false
-modulate = Color(0.380392, 0.388235, 1, 1)
-position = Vector2(0, -139)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_w87oa")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_lquwl")
